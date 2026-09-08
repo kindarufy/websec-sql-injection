@@ -1,5 +1,10 @@
 # WebSec SQL Injection
 
+Для локального запуска нужен **Node.js 22.5+** (используется встроенный
+`node:sqlite`). Рекомендуемая проверенная версия — **24.15.0**, записана в
+`.nvmrc`. С nvm: `nvm install 24.15.0`, затем `nvm use 24.15.0`.
+Перед `npm ci` проверьте `node --version`: Node 20 не поддерживается.
+
 **WebSec SQL Injection** — учебный backend security lab на **Node.js + Express + SQLite**, который показывает SQL Injection и безопасный вариант реализации того же API-сценария.
 
 В проекте намеренно существуют два endpoint'а:
