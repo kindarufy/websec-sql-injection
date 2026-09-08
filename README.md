@@ -98,13 +98,25 @@ SELECT ... WHERE username = '<user input>'
 
 ## Локальная демонстрация
 
-Обычный запрос к намеренно уязвимому endpoint:
+### Уязвимый endpoint
 
-```bash
-curl "http://localhost:3000/search/vulnerable?username=admin"
-```
+Один и тот же демонстрационный SQL Injection payload проходит через намеренно небезопасный endpoint. Вместо одного пользователя API возвращает несколько записей.
 
-Проверку security-сценариев рекомендуется выполнять только против этого локального учебного приложения. Полный набор примеров находится в [`docs/manual-checks.md`](docs/manual-checks.md).
+![WebSec SQL Injection — vulnerable endpoint](docs/assets/sql-injection-vulnerable.png)
+
+### Защищённый endpoint
+
+Тот же ввод блокируется secure endpoint за счёт валидации и безопасной работы с SQL-параметрами.
+
+![WebSec SQL Injection — secure endpoint](docs/assets/sql-injection-secure.png)
+
+### Security events
+
+Подозрительные и заблокированные запросы фиксируются в журнале security events.
+
+![WebSec SQL Injection — security events](docs/assets/sql-injection-security-events.png)
+
+Полный набор локальных сценариев проверки находится в [`docs/manual-checks.md`](docs/manual-checks.md).
 
 ## Проверка
 
