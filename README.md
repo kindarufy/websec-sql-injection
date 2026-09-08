@@ -58,10 +58,12 @@ websec-sql-injection/
 
 ## Локальный запуск
 
+
+
 ```bash
 git clone https://github.com/nikamurkaa/websec-sql-injection.git
 cd websec-sql-injection
-npm install
+npm ci
 npm start
 ```
 
@@ -142,3 +144,7 @@ Postman: [`postman/`](postman/).
 ## Автор
 
 [Николь Журбенко](https://github.com/nikamurkaa)
+
+Команды выполняются из корня репозитория. Остановка сервера — `Ctrl+C`.
+В PowerShell файл окружения можно скопировать командой
+`Copy-Item .env.example .env`.
