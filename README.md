@@ -2,11 +2,6 @@
 
 # WebSec SQL Injection
 
-Local setup requires **Node.js 22.5+** (the project uses the built-in
-`node:sqlite` module). The recommended, tested version is **24.15.0**, recorded in
-`.nvmrc`. With nvm: `nvm install 24.15.0`, then `nvm use 24.15.0`.
-Check `node --version` before `npm ci`: Node 20 is not supported.
-
 **WebSec SQL Injection** is an educational backend security lab built with **Node.js + Express + SQLite**, demonstrating SQL Injection and a secure implementation of the same API workflow.
 
 The project deliberately provides two endpoints:
@@ -59,6 +54,11 @@ websec-sql-injection/
 ```
 
 ## Local setup
+
+Local setup requires **Node.js 22.5+** (the project uses the built-in
+`node:sqlite` module). The recommended, tested version is **24.15.0**, recorded in
+`.nvmrc`. With nvm: `nvm install 24.15.0`, then `nvm use 24.15.0`.
+Check `node --version` before `npm ci`: Node 20 is not supported.
 
 Run the commands from the repository root. In PowerShell, copy the environment file
 with `Copy-Item .env.example .env`.
