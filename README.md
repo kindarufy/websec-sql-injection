@@ -1,32 +1,34 @@
+**English** | [Русский](README.ru.md)
+
 # WebSec SQL Injection
 
-Для локального запуска нужен **Node.js 22.5+** (используется встроенный
-`node:sqlite`). Рекомендуемая проверенная версия — **24.15.0**, записана в
-`.nvmrc`. С nvm: `nvm install 24.15.0`, затем `nvm use 24.15.0`.
-Перед `npm ci` проверьте `node --version`: Node 20 не поддерживается.
+Local setup requires **Node.js 22.5+** (the project uses the built-in
+`node:sqlite` module). The recommended, tested version is **24.15.0**, recorded in
+`.nvmrc`. With nvm: `nvm install 24.15.0`, then `nvm use 24.15.0`.
+Check `node --version` before `npm ci`: Node 20 is not supported.
 
-**WebSec SQL Injection** — учебный backend security lab на **Node.js + Express + SQLite**, который показывает SQL Injection и безопасный вариант реализации того же API-сценария.
+**WebSec SQL Injection** is an educational backend security lab built with **Node.js + Express + SQLite**, demonstrating SQL Injection and a secure implementation of the same API workflow.
 
-В проекте намеренно существуют два endpoint'а:
+The project deliberately provides two endpoints:
 
-- **vulnerable** — SQL-запрос собирается конкатенацией строк;
-- **secure** — используются parameterized query, allowlist-валидация и фильтрация ответа.
+- **vulnerable** — constructs SQL queries through string concatenation;
+- **secure** — uses parameterized queries, allowlist validation, and response filtering.
 
-> Уязвимый endpoint существует исключительно для локального обучения и тестирования. Проект не является инструкцией по атаке реальных систем.
+> The vulnerable endpoint exists exclusively for local learning and testing. This project is not a guide to attacking real systems.
 
-## Что демонстрирует проект
+## Skills demonstrated
 
-- SQL Injection через небезопасную string concatenation;
-- сценарий `OR 1=1` в изолированном demo API;
-- UNION-based data exposure в учебной базе;
-- parameterized queries как основную защиту;
-- allowlist-валидацию пользовательского ввода;
-- исключение поля `password` из безопасного API-ответа;
-- логирование подозрительных search events;
-- единый JSON-формат ошибок;
-- OpenAPI, Postman, automated tests и GitHub Actions CI.
+- SQL Injection through unsafe string concatenation;
+- the `OR 1=1` scenario in an isolated demo API;
+- UNION-based data exposure in a training database;
+- parameterized queries as the primary defense;
+- allowlist validation of user input;
+- excluding the `password` field from secure API responses;
+- logging suspicious search events;
+- a consistent JSON error format;
+- OpenAPI, Postman, automated tests, and GitHub Actions CI.
 
-## Стек
+## Tech stack
 
 - Node.js
 - Express
@@ -37,7 +39,7 @@
 - Postman
 - GitHub Actions
 
-## Структура
+## Structure
 
 ```text
 websec-sql-injection/
@@ -56,10 +58,10 @@ websec-sql-injection/
 └── README.md
 ```
 
-## Локальный запуск
+## Local setup
 
-Команды выполняются из корня репозитория. В PowerShell файл окружения
-можно скопировать командой `Copy-Item .env.example .env`.
+Run the commands from the repository root. In PowerShell, copy the environment file
+with `Copy-Item .env.example .env`.
 
 ```bash
 git clone https://github.com/nikamurkaa/websec-sql-injection.git
@@ -68,82 +70,82 @@ npm ci
 npm start
 ```
 
-API по умолчанию:
+Default API address:
 
 ```text
 http://localhost:3000
 ```
 
-Остановка сервера — `Ctrl+C`.
+Stop the server with `Ctrl+C`.
 
-## Endpoint'ы
+## Endpoints
 
-| Метод | Endpoint | Назначение |
+| Method | Endpoint | Purpose |
 | --- | --- | --- |
 | `GET` | `/health` | Health check |
-| `GET` | `/search/vulnerable?username=...` | Намеренно уязвимый поиск |
-| `GET` | `/search/secure?username=...` | Защищённый поиск |
-| `GET` | `/security-events` | Журнал поисковых/security events |
+| `GET` | `/search/vulnerable?username=...` | Deliberately vulnerable search |
+| `GET` | `/search/secure?username=...` | Secure search |
+| `GET` | `/security-events` | Search/security event log |
 
-## Уязвимый и защищённый подход
+## Vulnerable and secure approaches
 
-Небезопасная идея:
+The unsafe approach:
 
 ```text
 SELECT ... WHERE username = '<user input>'
 ```
 
-когда `<user input>` добавляется в SQL через конкатенацию.
+where `<user input>` is concatenated into the SQL statement.
 
-Защищённый endpoint использует параметризованный запрос и передаёт пользовательское значение отдельно от SQL-шаблона. Дополнительно применяется allowlist-валидация и response filtering.
+The secure endpoint uses a parameterized query, passing the user value separately from the SQL template. It also applies allowlist validation and response filtering.
 
-| Риск | Защита secure endpoint |
+| Risk | Secure endpoint protection |
 | --- | --- |
 | SQL Injection | parameterized query |
-| Неконтролируемый ввод | allowlist username validation |
-| Sensitive data exposure | поле password не возвращается |
-| Подозрительная активность | security event logging |
+| Unrestricted input | allowlist username validation |
+| Sensitive data exposure | password field excluded from responses |
+| Suspicious activity | security event logging |
 
-Подробнее: [`docs/security-model.md`](docs/security-model.md).
+See [`docs/security-model.md`](docs/security-model.md) for details.
 
-## Локальная демонстрация
+## Local demonstration
 
-### Уязвимый endpoint
+### Vulnerable endpoint
 
-Один и тот же демонстрационный SQL Injection payload проходит через намеренно небезопасный endpoint. Вместо одного пользователя API возвращает несколько записей.
+The demonstration SQL Injection payload succeeds against the deliberately unsafe endpoint. The API returns multiple records instead of a single user.
 
 ![WebSec SQL Injection — vulnerable endpoint](docs/assets/sql-injection-vulnerable.png)
 
-### Защищённый endpoint
+### Secure endpoint
 
-Тот же ввод блокируется secure endpoint за счёт валидации и безопасной работы с SQL-параметрами.
+The same input is blocked by the secure endpoint through validation and safe SQL parameter handling.
 
 ![WebSec SQL Injection — secure endpoint](docs/assets/sql-injection-secure.png)
 
 ### Security events
 
-Подозрительные и заблокированные запросы фиксируются в журнале security events.
+Suspicious and blocked requests are recorded in the security event log.
 
 ![WebSec SQL Injection — security events](docs/assets/sql-injection-security-events.png)
 
-Полный набор локальных сценариев проверки находится в [`docs/manual-checks.md`](docs/manual-checks.md).
+The complete set of local test scenarios is available in [`docs/manual-checks.md`](docs/manual-checks.md).
 
-## Проверка
+## Verification
 
 ```bash
 npm test
 npm run check
 ```
 
-Тесты сравнивают поведение vulnerable/secure endpoint'ов и проверяют валидацию, response filtering и security logging.
+Tests compare vulnerable and secure endpoint behavior and verify validation, response filtering, and security logging.
 
 OpenAPI: [`docs/openapi.yaml`](docs/openapi.yaml).  
 Postman: [`postman/`](postman/).
 
-## Статус
+## Status
 
-Проект завершён как учебный lab по **SQL Injection, secure query construction и API hardening**.
+Completed as an educational lab on **SQL Injection, secure query construction, and API hardening**.
 
-## Автор
+## Author
 
-[Николь Журбенко](https://github.com/nikamurkaa)
+[Nicole Zhurbenko](https://github.com/nikamurkaa)
